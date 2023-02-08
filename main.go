@@ -1,6 +1,9 @@
-//go build -o canvas_go.wasm main.go
-//tinygo build -o canvas_tiny.wasm -target wasm ./main.go
-//$Env:GOOS = "js"; $Env:GOARCH = "wasm"
+// Set environment and build target
+// $Env:GOOS = "js"; $Env:GOARCH = "wasm"
+// Go: Build canvas_go.wasm from main.go
+// go build -o canvas_go.wasm main.go
+// TinyGo: Build canvas_tiny.wasm from main.go
+// tinygo build -o canvas_tiny.wasm -target wasm ./main.go
 
 // Adapted from https://medium.com/free-code-camp/webassembly-with-golang-is-fun-b243c0e34f02
 
@@ -21,8 +24,8 @@ var (
 )
 
 func main() {
-	// https://stackoverflow.com/a/47262117
 	// Create empty channel
+	// https://stackoverflow.com/a/47262117
 	forever := make(chan bool)
 
 	setup()
@@ -101,8 +104,8 @@ func setup() {
 	canvas.Set("width", windowSize.w)
 	body.Call("appendChild", canvas)
 
-	// Create buttons
-	// Disabled for now - might not be faster than canvas buttons
+	// Create HTML buttons
+	// Disabled for now - it's not any faster than canvas buttons
 	/*buttonWrapper = doc.Call("createElement", "div")
 	buttonWrapper.Set("style", "display:flex")
 	buttonClear = doc.Call("createElement", "button")
@@ -121,13 +124,14 @@ func setup() {
 func draw(x float64, y float64) {
 	ctx.Set("fillStyle", "black")
 	ctx.Call("beginPath")
+	// Arc between the previous point and the current position. 
+	// Stops the broken line effect when the mouse moves faster than the browser can draw
 	ctx.Call("arc", x, y, gs.brushSize, 0, 3.14159*2, false)
 	ctx.Call("fill")
 	ctx.Call("closePath")
 
 	// Every frame, redraw the clear button - keeps it on top of the brush
 	go drawButtonClear()
-
 }
 
 // Draw a line
@@ -142,7 +146,6 @@ func drawWithArc(oldX float64, oldY float64, newX float64, newY float64) {
 
 	// Every frame, redraw the clear button - keeps it on top of the brush
 	go drawButtonClear()
-
 }
 
 func clear() {
@@ -155,6 +158,8 @@ func clear() {
 }
 
 func drawButtonClear() {
+	// Draw the clear button
+	// Box
 	ctx.Call("beginPath")
 	ctx.Call("rect", 3, 3, 100, 50)
 	ctx.Set("fillStyle", "white")
@@ -164,6 +169,7 @@ func drawButtonClear() {
 	ctx.Call("stroke")
 	ctx.Call("closePath")
 
+	// Text
 	ctx.Call("beginPath")
 	ctx.Set("font", "20px sans-serif")
 	ctx.Set("fillStyle", "black")
