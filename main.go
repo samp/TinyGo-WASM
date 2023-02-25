@@ -5,8 +5,6 @@
 // TinyGo: Build canvas_tiny.wasm from main.go
 // tinygo build -o canvas_tiny.wasm -target wasm ./main.go
 
-// Adapted from https://medium.com/free-code-camp/webassembly-with-golang-is-fun-b243c0e34f02
-
 package main
 
 import (
@@ -124,7 +122,7 @@ func setup() {
 func draw(x float64, y float64) {
 	ctx.Set("fillStyle", "black")
 	ctx.Call("beginPath")
-	// Arc between the previous point and the current position. 
+	// Arc between the previous point and the current position.
 	// Stops the broken line effect when the mouse moves faster than the browser can draw
 	ctx.Call("arc", x, y, gs.brushSize, 0, 3.14159*2, false)
 	ctx.Call("fill")
